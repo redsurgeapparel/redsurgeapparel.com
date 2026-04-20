@@ -1,0 +1,248 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import CTA from '@/components/ui/marketing/CTA/CTA.astro';
+import { Hero } from '@/components/hero';
+import { getCollection } from 'astro:content';
+import siteConfig from '@/config/site.config';
+import { resolveSocialLinks } from '@/lib/utils';
+import type { GetStaticPaths } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
+
+  const posts = allPosts
+    .filter((post) => post.data.locale === 'en')
+    .sort((a, b) => {
+      const dateA = new Date(a.data.publishedAt).getTime();
+      const dateB = new Date(b.data.publishedAt).getTime();
+      return dateB - dateA;
+    });
+
+  return paginate(posts, { pageSize: 12 });
+};
+
+const { page } = Astro.props as {
+  page: {
+    data: CollectionEntry<'blog'>[];
+    currentPage: number;
+    lastPage: number;
+    url: {
+      prev?: string;
+      next?: string;
+    };
+  };
+};
+const posts = page.data;
+
+const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
+
+// Featured only on page 1
+const featuredPosts = page.currentPage === 1 ? posts.filter((post) => post.data.featured) : [];
+
+// Regular posts
+const nonFeaturedPosts = posts.filter((post) => !post.data.featured);
+const regularPosts = nonFeaturedPosts.length > 0 ? nonFeaturedPosts : posts;
+
+// Tags (per page)
+const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
+
+const getPostUrl = (postId: string) => {
+  const slug = postId.replace('en/', '');
+  return `/${slug}`;
+};
+---
+
+<PageLayout
+  title={`Blog — Page ${page.currentPage}`}
+  description="Articles on web design, development, and the web by Astro Rocket."
+  showScrollProgress
+  eagerReveal
+>
+  <Hero layout="centered" size="sm">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="book" size="sm" />
+      All posts
+    </Badge>
+
+    <h1 slot="title">Blog</h1>
+
+    <p slot="description">
+      Articles on Astro, web performance, design systems, and building with Astro Rocket.
+    </p>
+  </Hero>
+
+  <!-- Featured Posts -->
+  {
+    featuredPosts.length > 0 && (
+      <section
+        id="featured-section"
+        class="bg-background-secondary border-border border-t py-[var(--space-section-md)]"
+      >
+        <div class="mx-auto flex max-w-6xl flex-col gap-8 px-6">
+          <h2 class="font-display text-foreground text-3xl font-bold md:text-4xl">Featured</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            {featuredPosts.map((post) => (
+              <div class="post-card" data-tags={JSON.stringify(post.data.tags)}>
+                <BlogCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  href={getPostUrl(post.id)}
+                  publishedAt={post.data.publishedAt}
+                  tags={post.data.tags}
+                  author={post.data.author}
+                  image={post.data.image}
+                  svgSlug={post.data.svgSlug}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- All Posts -->
+  <section
+    class:list={[
+      featuredPosts.length > 0 ? 'bg-background' : 'bg-background-secondary',
+      'border-border border-t py-[var(--space-section-md)]',
+    ]}
+  >
+    <div class="mx-auto flex max-w-6xl flex-col gap-8 px-6">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        {
+          featuredPosts.length > 0 && nonFeaturedPosts.length > 0 && (
+            <h2 class="font-display text-foreground text-3xl font-bold md:text-4xl">All posts</h2>
+          )
+        }
+
+        {
+          allTags.length > 0 && (
+            <div class="ml-auto flex items-center gap-3">
+              <label
+                for="tag-filter"
+                class="text-foreground-muted text-sm font-medium whitespace-nowrap"
+              >
+                Filter
+              </label>
+
+              <select
+                id="tag-filter"
+                class="tag-select border-border bg-background text-foreground rounded-full border px-3 py-1.5 text-sm"
+              >
+                <option value="all">All posts</option>
+                {allTags.map((tag) => (
+                  <option value={tag}>{tag}</option>
+                ))}
+              </select>
+            </div>
+          )
+        }
+      </div>
+
+      {
+        regularPosts.length > 0 ? (
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {regularPosts.map((post) => (
+              <div class="post-card" data-tags={JSON.stringify(post.data.tags)}>
+                <BlogCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  href={getPostUrl(post.id)}
+                  publishedAt={post.data.publishedAt}
+                  tags={post.data.tags}
+                  author={post.data.author}
+                  image={post.data.image}
+                  svgSlug={post.data.svgSlug}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="text-foreground-muted py-16 text-center text-lg">No posts found</p>
+        )
+      }
+
+      <!-- Pagination -->
+      <div class="mt-12 flex items-center justify-center gap-4">
+        {
+          page.url.prev && (
+            <a href={page.url.prev} class="rounded border px-4 py-2">
+              ← Previous
+            </a>
+          )
+        }
+
+        <span class="text-sm">
+          Page {page.currentPage} of {page.lastPage}
+        </span>
+
+        {
+          page.url.next && (
+            <a href={page.url.next} class="rounded border px-4 py-2">
+              Next →
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <CTA variant="default" size="md" maxWidth="lg">
+    <h2 slot="heading" class="!text-4xl">Follow along</h2>
+    <p slot="description" class="!text-lg text-balance">
+      Stay in the loop — new articles, thoughts, and updates.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="/rss.xml" class="rounded-full border px-4 py-2 text-sm">
+        <Icon name="rss" size="sm" /> RSS
+      </a>
+
+      {
+        socialLinks.map((link) => (
+          <a href={link.href} target="_blank" class="rounded-full border px-4 py-2 text-sm">
+            <Icon name={link.icon} size="sm" /> {link.label}
+          </a>
+        ))
+      }
+
+      <a href={`mailto:${siteConfig.email}`} class="rounded-full border px-4 py-2 text-sm">
+        <Icon name="mail" size="sm" /> Email
+      </a>
+    </div>
+  </CTA>
+</PageLayout>
+
+<style>
+  .tag-select {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const select = document.querySelector<HTMLSelectElement>('#tag-filter');
+    const cards = document.querySelectorAll<HTMLElement>('.post-card');
+
+    if (!select) return;
+
+    select.addEventListener('change', () => {
+      const tag = select.value;
+
+      cards.forEach((card) => {
+        const tags = JSON.parse(card.dataset.tags || '[]');
+        card.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
+      });
+    });
+  });
+</script>

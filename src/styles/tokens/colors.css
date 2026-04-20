@@ -22,21 +22,4 @@
 
 @import './primitives.css';
 
-/* — active in selector — */
-@import '../themes/orange.css';
-@import '../themes/lime.css';
-@import '../themes/emerald.css';
-@import '../themes/teal.css';
-@import '../themes/sky.css';
-@import '../themes/blue.css';
-@import '../themes/purple.css';
-
-/* — hidden from selector — */
-@import '../themes/cyan.css';
-@import '../themes/green.css';
-@import '../themes/indigo.css';
-
-/* — available, not in selector — */
-@import '../themes/amber.css';
-@import '../themes/violet.css';
-@import '../themes/magenta.css';
+@import '../themes/red.css';
