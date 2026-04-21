@@ -95,6 +95,22 @@ if (includeProfessionalServiceSchema) {
       })();
     </script>
 
+    <!-- Mediavine Ads -->
+    <script
+      type="text/javascript"
+      async="async"
+      data-noptimize="1"
+      data-cfasync="false"
+      src="//scripts.scriptwrapper.com/tags/76ab7ac3-7f23-448a-8ddb-8d35bdcbf255.js"></script>
+
+    <script is:inline>
+      document.addEventListener('astro:after-swap', () => {
+        if (window.growMe) {
+          window.growMe('refresh');
+        }
+      });
+    </script>
+
     <!-- SEO -->
     <SEO
       title={title}
