@@ -2,7 +2,6 @@
 import '@/styles/global.css';
 import SEO from '@/components/seo/SEO.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
-import Analytics from '@/components/layout/Analytics.astro';
 import { ClientRouter } from 'astro:transitions';
 import {
   createWebsiteSchema,
@@ -102,6 +101,19 @@ if (includeProfessionalServiceSchema) {
       data-cfasync="false"
       src="//scripts.scriptwrapper.com/tags/76ab7ac3-7f23-448a-8ddb-8d35bdcbf255.js"></script>
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6ZXKV7YCGR"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+
+      gtag('js', new Date());
+      gtag('config', 'G-6ZXKV7YCGR');
+    </script>
+
     <script is:inline>
       document.addEventListener('astro:after-swap', () => {
         if (window.growMe) {
@@ -131,9 +143,6 @@ if (includeProfessionalServiceSchema) {
 
     <!-- JSON-LD Structured Data -->
     <JsonLd schema={schemas} />
-
-    <!-- Analytics (loads if PUBLIC_GA_MEASUREMENT_ID or PUBLIC_GTM_ID is set) -->
-    <Analytics />
 
     <!-- View Transitions (client-side routing with animated page transitions) -->
     <ClientRouter />
@@ -266,7 +275,6 @@ if (includeProfessionalServiceSchema) {
     </main>
 
     <slot name="footer" />
-
 
     <!-- Back to top button -->
     <button
