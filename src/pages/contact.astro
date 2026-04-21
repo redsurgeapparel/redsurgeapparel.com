@@ -19,7 +19,7 @@ const channels = [
     icon: 'mail',
     label: 'Email',
     value: siteConfig.email,
-    note: 'Drop us a line',
+    note: 'Send your question or idea',
     href: `mailto:${siteConfig.email}`,
     external: false,
   },
@@ -27,7 +27,7 @@ const channels = [
     icon: link.icon,
     label: link.label,
     value: link.href.replace(/^https?:\/\/(www\.)?/, ''),
-    note: 'Follow along',
+    note: 'Follow for outfit ideas',
     href: link.href,
     external: true,
   })),
@@ -35,22 +35,23 @@ const channels = [
 ---
 
 <PageLayout
-  title="Contact — Astro Rocket"
-  description="Get in touch"
+  title="Contact — Red Surge Apparel"
+  description="Get in touch with Red Surge Apparel for outfit questions, suggestions, or collaborations."
   eagerReveal
 >
   <Hero layout="centered" size="sm">
     <Badge slot="badge" variant="brand" pill>
       <Icon name="mail" size="sm" />
-      Get in touch
+      Contact
     </Badge>
 
     <h1 slot="title">
-      Send me a <span class="text-brand-500">message.</span>
+      Got a <span class="text-brand-500">question?</span>
     </h1>
 
     <p slot="description">
-      Use the form below or reach out on any of these channels. I'll get back to you within 1 business day.
+      Whether you're trying to figure out what to wear, have a blog idea, or want to collaborate —
+      reach out. I read everything.
     </p>
   </Hero>
 
@@ -62,7 +63,13 @@ const channels = [
         <!-- Left column: contact form -->
         <div class="lg:col-span-3 h-full" data-reveal>
           <Card padding="lg" class="h-full flex flex-col justify-center">
-            <h2 class="font-display text-xl font-bold text-foreground mb-6">Send a message</h2>
+            <h2 class="font-display text-xl font-bold text-foreground mb-6">
+              Send a message
+            </h2>
+            <p class="text-sm text-foreground-muted mb-6">
+              Ask about an outfit, suggest a post, or just say what you're trying to dress for —
+              I’ll help if I can.
+            </p>
             <ContactForm />
           </Card>
         </div>
@@ -70,8 +77,12 @@ const channels = [
         <!-- Right column: contact channels -->
         <div class="lg:col-span-2 space-y-4" data-reveal data-reveal-delay="1">
           <div>
-            <h2 class="font-display text-lg font-bold text-foreground mb-1">Other channels</h2>
-            <p class="text-sm text-foreground-muted">Prefer a direct channel? Pick whichever works best.</p>
+            <h2 class="font-display text-lg font-bold text-foreground mb-1">
+              Other ways to reach out
+            </h2>
+            <p class="text-sm text-foreground-muted">
+              Prefer social? Follow along or message me directly.
+            </p>
           </div>
 
           <!-- Channel list -->
@@ -98,15 +109,19 @@ const channels = [
             ))}
           </div>
 
-          <!-- Location card -->
+          <!-- Brand note instead of location -->
           <Card hover padding="sm" class="bg-brand-500/5 border-brand-500/20">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
-                <Icon name="map-pin" size="sm" />
+                <Icon name="info" size="sm" />
               </div>
               <div>
-                <p class="font-semibold text-sm text-foreground">{siteConfig.address?.city ?? 'Your City'}</p>
-                <p class="text-xs text-foreground-muted mt-0.5">Based in {siteConfig.address?.country ?? 'Your Country'}</p>
+                <p class="font-semibold text-sm text-foreground">
+                  Red Surge Apparel
+                </p>
+                <p class="text-xs text-foreground-muted mt-0.5">
+                  Outfit ideas for concerts, events, and everyday plans.
+                </p>
               </div>
             </div>
           </Card>

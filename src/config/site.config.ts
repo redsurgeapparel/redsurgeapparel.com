@@ -24,80 +24,77 @@ export interface SiteConfig {
     google?: string;
     bing?: string;
   };
-  /** Path to author photo (relative to site root, e.g. '/avatar.jpg'). Used in Person schema. */
   authorImage?: string;
-  /**
-   * Set to false if your blog post images already match your theme color
-   * and you don't want the brand color overlay applied on top of them.
-   */
   blogImageOverlay?: boolean;
-  /**
-   * Branding configuration
-   * Logo files: Replace SVGs in src/assets/branding/
-   * Favicon: Replace in public/favicon.svg
-   */
   branding: {
-    /** Logo alt text for accessibility */
     logo: {
       alt: string;
-      /** Path to logo image for structured data (e.g. '/logo.png'). Add a PNG to public/ and set this. */
       imageUrl?: string;
     };
-    /** Favicon path (lives in public/) */
     favicon: {
       svg: string;
     };
-    /** Theme colors for manifest and browser UI */
     colors: {
-      /** Browser toolbar color (hex) */
       themeColor: string;
-      /** PWA splash screen background (hex) */
       backgroundColor: string;
     };
   };
 }
 
 const siteConfig: SiteConfig = {
-  name: 'Astro Rocket',
+  name: 'Red Surge Apparel',
+
   description:
-    'Astro Rocket — A production-ready Astro 6 starter with 12 beautiful themes, 57+ components, built-in i18n, dark mode and a fast, modern foundation to build anything on.',
-  url: SITE_URL || 'https://astrorocket.dev',
+    'Outfit ideas for concerts, parties, and real-life events. Simple guides to help you know exactly what to wear for any situation.',
+
+  // ⚠️ Replace this with your real domain when you have one
+  url: SITE_URL || 'https://redsurgeapparel.com',
+
   ogImage: '/og-default.svg',
-  author: 'Hans Martens',
-  email: 'hello@hansmartens.dev',
+
+  // You can change this to your name later
+  author: 'Collin Ste',
+
+  // Optional — replace or remove if you don’t want contact visible
+  email: 'contact@redsurgeapparel.com',
+
+  // Optional — update if you want local SEO later
   address: {
     street: '',
-    city: 'Veghel',
-    state: '',
+    city: 'New York',
+    state: 'NY',
     zip: '',
-    country: 'the Netherlands',
+    country: 'United States',
   },
-  socialLinks: [
-    'https://github.com/hansmartens68/Astro-Rocket',
-    'https://x.com/hansmartens_dev',
-    'https://www.linkedin.com',
-    'https://bsky.app/profile/hansmartens-online.bsky.social',
-  ],
+
+  // Replace with your real socials (or remove ones you don’t use)
+  socialLinks: ['https://www.instagram.com/', 'https://www.tiktok.com/', 'https://x.com/'],
+
   twitter: {
-    site: 'https://x.com/hansmartens_dev',
-    creator: '@hansmartens_dev',
+    site: '@redsurge',
+    creator: '@redsurge',
   },
+
   verification: {
     google: GOOGLE_SITE_VERIFICATION,
     bing: BING_SITE_VERIFICATION,
   },
+
+  // Replace if you add a real logo/avatar
   authorImage: '/avatar.svg',
+
   blogImageOverlay: true,
+
   branding: {
     logo: {
-      alt: 'Astro Rocket',
-      imageUrl: '/favicon.svg',
+      alt: 'Red Surge Apparel',
+      imageUrl: '/logo.png', // optional — add later if you create one
     },
     favicon: {
       svg: '/favicon.svg',
     },
     colors: {
-      themeColor: '#3b82f6',
+      themeColor: '#111111', // darker = more fashion/editorial feel
       backgroundColor: '#ffffff',
     },
   },

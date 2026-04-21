@@ -48,30 +48,31 @@ const getPostUrl = (postId: string) => {
     </Badge>
 
     <h1 slot="title">Blog</h1>
+
   </Hero>
 
-  <section class="py-12">
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {regularPosts.map((post) => (
-          <BlogCard
-            title={post.data.title}
-            description={post.data.description}
-            href={getPostUrl(post.id)}
-            publishedAt={post.data.publishedAt}
-            tags={post.data.tags}
-            author={post.data.author}
-            image={post.data.image}
-            svgSlug={post.data.svgSlug}
-          />
-        ))}
+        {
+          regularPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              href={getPostUrl(post.id)}
+              publishedAt={post.data.publishedAt}
+              tags={post.data.tags}
+              author={post.data.author}
+              image={post.data.image}
+              svgSlug={post.data.svgSlug}
+            />
+          ))
+        }
       </div>
 
       {/* 👇 Pagination entry point */}
       <div class="mt-12 flex justify-center">
-        <a href="/blog/2" class="px-4 py-2 border rounded">
-          Next →
-        </a>
+        <a href="/blog/2" class="rounded border px-4 py-2"> Next → </a>
       </div>
     </div>
   </section>
