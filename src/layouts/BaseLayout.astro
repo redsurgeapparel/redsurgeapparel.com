@@ -115,32 +115,6 @@ if (includeProfessionalServiceSchema) {
       gtag('config', 'G-6ZXKV7YCGR');
     </script>
 
-    <script is:inline>
-      document.addEventListener('astro:page-load', () => {
-        // Refresh Grow widgets
-        if (window.growMe) {
-          window.growMe('refresh');
-        }
-
-        // Remove old Journey script
-        const oldScript = document.querySelector('script[src*="scripts.scriptwrapper.com"]');
-
-        if (oldScript) {
-          oldScript.remove();
-        }
-
-        // Re-add Journey script after Astro page change
-        const script = document.createElement('script');
-        script.src =
-          'https://scripts.scriptwrapper.com/tags/76ab7ac3-7f23-448a-8ddb-8d35bdcbf255.js';
-
-        script.async = true;
-        script.setAttribute('data-noptimize', '1');
-        script.setAttribute('data-cfasync', 'false');
-
-        document.head.appendChild(script);
-      });
-    </script>
 
     <!-- SEO -->
     <SEO
@@ -165,7 +139,7 @@ if (includeProfessionalServiceSchema) {
     <JsonLd schema={schemas} />
 
     <!-- View Transitions (client-side routing with animated page transitions) -->
-    <ClientRouter />
+    <!-- <ClientRouter /> -->
 
     <!-- Dynamic favicon: syncs letter (first letter of site name) and color (brand-500) with active theme -->
     <script is:inline define:vars={{ _faviconLetter: siteConfig.name.charAt(0).toUpperCase() }}>
@@ -290,7 +264,7 @@ if (includeProfessionalServiceSchema) {
 
     <slot name="header" />
 
-    <main id="main-content" class="flex-1">
+    <main id="main-content" class="flex-1" role="main">
       <slot />
     </main>
 
