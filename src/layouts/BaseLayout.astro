@@ -100,8 +100,7 @@ if (includeProfessionalServiceSchema) {
       async
       data-noptimize="1"
       data-cfasync="false"
-      src="https://scripts.scriptwrapper.com/tags/76ab7ac3-7f23-448a-8ddb-8d35bdcbf255.js"
-    ></script>
+      src="https://scripts.scriptwrapper.com/tags/76ab7ac3-7f23-448a-8ddb-8d35bdcbf255.js"></script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6ZXKV7YCGR"></script>
@@ -123,15 +122,23 @@ if (includeProfessionalServiceSchema) {
           window.growMe('refresh');
         }
 
-        // Re-trigger Journey/Mediavine ads after navigation
-        if (window.top?.postMessage) {
-          window.top.postMessage(
-            {
-              action: 'mv-ad-refresh',
-            },
-            '*'
-          );
+        // Remove old Journey script
+        const oldScript = document.querySelector('script[src*="scripts.scriptwrapper.com"]');
+
+        if (oldScript) {
+          oldScript.remove();
         }
+
+        // Re-add Journey script after Astro page change
+        const script = document.createElement('script');
+        script.src =
+          'https://scripts.scriptwrapper.com/tags/76ab7ac3-7f23-448a-8ddb-8d35bdcbf255.js';
+
+        script.async = true;
+        script.setAttribute('data-noptimize', '1');
+        script.setAttribute('data-cfasync', 'false');
+
+        document.head.appendChild(script);
       });
     </script>
 
