@@ -1,0 +1,4 @@
+1. Edit the excel file to add any products and/or information to the sheet
+2. Save the excel file as a "tab-deliminated" file
+3. Reupload the tab-deliminated file to this file location
+4. Feed should run automatically at midnight but can fetch in merchant center if needed
