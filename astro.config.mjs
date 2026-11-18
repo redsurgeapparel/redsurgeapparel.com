@@ -4,14 +4,16 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
-import vercel from '@astrojs/vercel';
-import netlify from '@astrojs/netlify';
+import cloudflare from '@astrojs/cloudflare';
 
 const isNetlify = process.env.DEPLOY_TARGET === 'netlify';
 
 export default defineConfig({
-  adapter: isNetlify ? netlify() : vercel(),
-  site: process.env.SITE_URL || 'https://example.com',
+  adapter: cloudflare({
+    imageService: 'cloudflare', // recommended for Workers
+    platformProxy: { enabled: true }, // lets you access bindings in dev
+  }),
+  site: process.env.SITE_URL || 'https://redsurgeapparel.com/',
 
   env: {
     schema: {

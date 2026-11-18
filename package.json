@@ -39,11 +39,10 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.4.9",
     "@astrojs/mdx": "5.0.0",
-    "@astrojs/netlify": "^7.0.2",
     "@astrojs/react": "5.0.0",
     "@astrojs/sitemap": "^3.7.1",
-    "@astrojs/vercel": "^10.0.0",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/manrope": "^5.2.8",
     "@fontsource-variable/outfit": "^5.2.8",
@@ -59,7 +58,8 @@
     "react-dom": "^19.0.0",
     "resend": "^6.9.3",
     "schema-dts": "^1.1.2",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^2.6.0",
+    "wrangler": "^4.164.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.7",
