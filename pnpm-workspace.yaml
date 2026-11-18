@@ -1,8 +1,0 @@
-allowBuilds:
-  '*': true
-  '@parcel/watcher': true
-  esbuild: true
-  sharp: true
-  workerd: true
-minimumReleaseAgeExclude:
-  - '@astrojs/cloudflare@14.4.9'
