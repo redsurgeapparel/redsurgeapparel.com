@@ -72,36 +72,6 @@ if (includeProfessionalServiceSchema) {
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content={siteConfig.branding.colors.themeColor} />
 
-    <!-- Mediavine -->
-    <script data-grow-initializer="">
-      !(function () {
-        window.growMe ||
-          ((window.growMe = function (e) {
-            window.growMe._.push(e);
-          }),
-          (window.growMe._ = []));
-        var e = document.createElement('script');
-        ((e.type = 'text/javascript'),
-          (e.src = 'https://faves.grow.me/main.js'),
-          (e.defer = !0),
-          e.setAttribute(
-            'data-grow-faves-site-id',
-            'U2l0ZTo3NmFiN2FjMy03ZjIzLTQ0OGEtOGRkYi04ZDM1YmRjYmYyNTU='
-          ));
-        var t = document.getElementsByTagName('script')[0];
-        t.parentNode.insertBefore(e, t);
-      })();
-    </script>
-
-    <!-- Mediavine Ads -->
-    <script
-      is:inline
-      type="text/javascript"
-      async
-      data-noptimize="1"
-      data-cfasync="false"
-      src="https://scripts.scriptwrapper.com/tags/76ab7ac3-7f23-448a-8ddb-8d35bdcbf255.js"></script>
-
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6ZXKV7YCGR"></script>
     <script is:inline>
@@ -114,7 +84,6 @@ if (includeProfessionalServiceSchema) {
       gtag('js', new Date());
       gtag('config', 'G-6ZXKV7YCGR');
     </script>
-
 
     <!-- SEO -->
     <SEO
