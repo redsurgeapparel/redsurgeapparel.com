@@ -10,7 +10,7 @@ export default defineConfig({
   output: 'server',
 
   adapter: cloudflare({
-    imageService: 'compile',
+    imageService: 'cloudflare-binding',
     platformProxy: { enabled: true },
   }),
 

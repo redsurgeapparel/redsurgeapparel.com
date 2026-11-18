@@ -33,17 +33,17 @@ const safeDate = new Date(publishedAt);
     <div class="mb-4 overflow-hidden rounded-md bg-gray-100">
       <div class="aspect-video w-full">
         {
-          svgSlug ? (
-            <div class="flex h-full w-full items-center justify-center">
-              <BlogImageSVG slug={svgSlug} title={title} />
-            </div>
-          ) : image ? (
+          image ? (
             <img
               src={image}
               alt={title}
               class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             />
+          ) : svgSlug ? (
+            <div class="flex h-full w-full items-center justify-center">
+              <BlogImageSVG slug={svgSlug} title={title} />
+            </div>
           ) : null
         }
       </div>
