@@ -723,14 +723,25 @@
   }
 
   .prose a {
-    color: var(--color-brand-500) !important;
+    /* Darker in light mode for better contrast */
+    color: var(--color-brand-700) !important;
     font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 3px;
     transition: color var(--transition-fast);
   }
+
   .prose a:hover {
-    color: var(--color-brand-600) !important;
+    color: var(--color-brand-800) !important;
+  }
+
+  /* Lighter in dark mode for better contrast against black */
+  .dark .prose a {
+    color: var(--color-brand-400) !important;
+  }
+
+  .dark .prose a:hover {
+    color: var(--color-brand-300) !important;
   }
 
   .prose h1 {
