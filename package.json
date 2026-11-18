@@ -37,7 +37,8 @@
     "validate": "pnpm lint && pnpm check && pnpm build",
     "test": "vitest",
     "test:e2e": "playwright test",
-    "generate-types": "wrangler types"
+    "generate-types": "wrangler types",
+    "audit:descriptions": "node scripts/audit-descriptions.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.4.9",

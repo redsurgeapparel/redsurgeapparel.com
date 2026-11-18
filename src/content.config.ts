@@ -1,3 +1,4 @@
+//src/content.config.ts
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
@@ -8,7 +9,7 @@ const blog = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string().max(100),
-      description: z.string().max(200),
+      description: z.string().max(300),
       publishedAt: z.coerce.date(),
       updatedAt: z.coerce.date().optional(),
       author: z.string().default('Team'),
@@ -19,6 +20,15 @@ const blog = defineCollection({
       draft: z.boolean().default(false),
       featured: z.boolean().default(false),
       locale: z.enum(['en', 'es', 'fr']).default('en'),
+      // FAQ pairs for FAQPage JSON-LD (GEO) — consumed by BlogLayout → createFAQSchema
+      faqs: z
+        .array(
+          z.object({
+            question: z.string(),
+            answer: z.string(),
+          })
+        )
+        .optional(),
     }),
 });
 

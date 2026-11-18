@@ -1,8 +1,11 @@
 ---
+// src/components/seo/JsonLd.astro
 import type { Thing, WithContext } from 'schema-dts';
 
+type SchemaInput = WithContext<Thing> | Record<string, unknown>;
+
 interface Props {
-  schema: WithContext<Thing> | WithContext<Thing>[];
+  schema: SchemaInput | SchemaInput[];
 }
 
 const { schema } = Astro.props;

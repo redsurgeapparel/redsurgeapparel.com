@@ -40,7 +40,7 @@ const relatedPosts = allPosts
 // Generate URLs for each post (remove locale prefix from id)
 const getPostUrl = (postId: string) => {
   const slug = postId.replace(`${locale}/`, '');
-  return `/blog/${slug}`;
+  return `/${slug}`;
 };
 ---
 

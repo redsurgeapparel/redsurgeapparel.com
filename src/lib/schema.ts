@@ -1,3 +1,4 @@
+//src/lib/schema.ts
 import type {
   WebSite,
   Organization,
@@ -30,16 +31,16 @@ export function createPersonSchema(): WithContext<Person> {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Astro Rocket',
-    jobTitle: 'Web Designer & Developer',
+    name: siteConfig.author,
+    jobTitle: 'Fashion Blogger',
     url: siteConfig.url,
     email: siteConfig.email,
     ...(siteConfig.authorImage ? { image: `${siteConfig.url}${siteConfig.authorImage}` } : {}),
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Veghel',
-      addressRegion: 'Noord-Brabant',
-      addressCountry: 'NL',
+      addressLocality: siteConfig.address?.city ?? 'New York',
+      addressRegion: siteConfig.address?.state ?? 'NY',
+      addressCountry: siteConfig.address?.country ?? 'United States',
     },
     sameAs: siteConfig.socialLinks,
   };

@@ -1,3 +1,4 @@
+//src/config/site.config.ts
 import { SITE_URL, GOOGLE_SITE_VERIFICATION, BING_SITE_VERIFICATION } from 'astro:env/server';
 
 export interface SiteConfig {
@@ -53,7 +54,7 @@ const siteConfig: SiteConfig = {
   ogImage: '/og-default.svg',
 
   // You can change this to your name later
-  author: 'Collin Ste',
+  author: 'Collin Stewart',
 
   // Optional — replace or remove if you don’t want contact visible
   email: 'contact@redsurgeapparel.com',
@@ -88,7 +89,7 @@ const siteConfig: SiteConfig = {
   branding: {
     logo: {
       alt: 'Red Surge Apparel',
-      imageUrl: '/logo.png', // optional — add later if you create one
+      imageUrl: undefined, // optional — add later if you create one
     },
     favicon: {
       svg: '/favicon.svg',

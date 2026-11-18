@@ -1,6 +1,5 @@
 ---
-//src/layouts/BlogLayout.astro
-import type { ImageMetadata } from 'astro';
+// src/layouts/BlogLayout.astro
 import siteConfig from '@/config/site.config';
 import BaseLayout from './BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
@@ -12,8 +11,14 @@ import RelatedPosts from '@/components/blog/RelatedPosts.astro';
 import CTA from '@/components/ui/marketing/CTA/CTA.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { resolveSocialLinks } from '@/lib/utils';
+import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
 
 const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 interface Props {
   title: string;
@@ -26,6 +31,8 @@ interface Props {
   svgSlug?: string;
   tags?: string[];
   slug?: string;
+  faqs?: FAQItem[];
+  schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -39,6 +46,8 @@ const {
   svgSlug,
   tags = [],
   slug = '',
+  faqs,
+  schema,
 } = Astro.props;
 
 const ogImage = image || siteConfig.ogImage;
@@ -49,8 +58,46 @@ const breadcrumbs = [
   { label: title },
 ];
 
-// Get full URL for sharing
-const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
+// Canonical URL — strip locale prefix (post.id is "en/slug", real URL is "/slug")
+const siteUrl = Astro.site ?? new URL(siteConfig.url);
+const cleanSlug = slug.replace(/^(en|es|fr)\//, '');
+const canonicalUrl = new URL(cleanSlug ? `/${cleanSlug}` : Astro.url.pathname, siteUrl).toString();
+
+// Absolute image URL
+const absoluteImage = (() => {
+  if (!ogImage) return undefined;
+  try {
+    return new URL(ogImage, siteUrl).toString();
+  } catch {
+    return undefined;
+  }
+})();
+
+// Article / BlogPosting schema (typed via helper)
+const articleSchema = createBlogPostSchema({
+  title,
+  description,
+  url: canonicalUrl,
+  image: absoluteImage ?? '',
+  datePublished: publishedAt,
+  dateModified: updatedAt,
+  author: {
+    name: author,
+    url: new URL('/about', siteUrl).toString(),
+  },
+});
+
+// FAQPage schema (only if faqs provided) — typed via helper
+const faqSchema = faqs && faqs.length > 0 ? createFAQSchema(faqs) : undefined;
+
+// Compose schemas — NOTE: BreadcrumbList is emitted by <Breadcrumbs /> below, do NOT duplicate
+const pageSchemas = [
+  articleSchema,
+  ...(faqSchema ? [faqSchema] : []),
+  ...(schema ? (Array.isArray(schema) ? schema : [schema]) : []),
+];
+
+const fullUrl = canonicalUrl;
 ---
 
 <BaseLayout
@@ -64,6 +111,8 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
     authors: [author],
     tags,
   }}
+  includePersonSchema={true}
+  schema={pageSchemas}
 >
   <Header
     slot="header"
@@ -77,7 +126,6 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
   />
 
   <div class="min-h-screen pt-16">
-    <!-- Article Hero -->
     <ArticleHero
       title={title}
       description={description}
@@ -94,15 +142,12 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
       <div class="mx-auto max-w-4xl px-6">
         <Breadcrumbs items={breadcrumbs} class="mb-8" />
 
-        <!-- Journey content area -->
         <div class="mv-content-body prose prose-lg max-w-none">
           <slot />
         </div>
 
-        <!-- Article Footer -->
         <footer class="border-border mt-12 border-t pt-8" data-reveal>
           <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <!-- Back link -->
             <a
               href="/blog"
               class="text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 inline-flex items-center gap-2 text-sm font-medium transition-colors"
@@ -120,15 +165,12 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
               </svg>
               Back to Blog
             </a>
-
-            <!-- Share buttons -->
             <ShareButtons title={title} url={fullUrl} />
           </div>
         </footer>
       </div>
     </article>
 
-    <!-- Related Posts -->
     {
       tags.length > 0 && (
         <div class="mx-auto max-w-screen-xl px-6" data-reveal>
@@ -137,7 +179,6 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
       )
     }
 
-    <!-- Follow Along -->
     <CTA
       variant="default"
       size="md"
@@ -146,18 +187,16 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
       data-reveal
       class="bg-background-secondary"
     >
-      <h2 slot="heading" class="!text-4xl">Follow along</h2>
+      <h2 slot="heading" class="!text-4xl">Get new outfit guides as they publish</h2>
       <p slot="description" class="!text-lg text-balance">
-        Stay in the loop — new articles, thoughts, and updates.
+        Concert outfit formulas, styling tips, and new guides — follow along however you prefer.
       </p>
-
       <div class="flex flex-wrap items-center justify-center gap-3">
         <a
           href="/rss.xml"
           class="border-border bg-background text-foreground hover:border-brand-500 hover:text-brand-500 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
         >
-          <Icon name="rss" size="sm" />
-          RSS Feed
+          <Icon name="rss" size="sm" /> RSS Feed
         </a>
         {
           socialLinks.map((link) => (
@@ -167,8 +206,7 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
               rel="noopener noreferrer"
               class="border-border bg-background text-foreground hover:border-brand-500 hover:text-brand-500 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
             >
-              <Icon name={link.icon} size="sm" />
-              {link.label}
+              <Icon name={link.icon} size="sm" /> {link.label}
             </a>
           ))
         }
@@ -176,8 +214,7 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
           href={`mailto:${siteConfig.email}`}
           class="border-border bg-background text-foreground hover:border-brand-500 hover:text-brand-500 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
         >
-          <Icon name="mail" size="sm" />
-          Email
+          <Icon name="mail" size="sm" /> Email
         </a>
       </div>
     </CTA>
