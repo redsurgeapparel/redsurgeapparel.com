@@ -8,7 +8,6 @@ import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
 import ArticleHero from '@/components/blog/ArticleHero.astro';
 import ShareButtons from '@/components/blog/ShareButtons.astro';
 import RelatedPosts from '@/components/blog/RelatedPosts.astro';
-import CTA from '@/components/ui/marketing/CTA/CTA.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { resolveSocialLinks } from '@/lib/utils';
 import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
@@ -58,12 +57,10 @@ const breadcrumbs = [
   { label: title },
 ];
 
-// Canonical URL — strip locale prefix (post.id is "en/slug", real URL is "/slug")
 const siteUrl = Astro.site ?? new URL(siteConfig.url);
 const cleanSlug = slug.replace(/^(en|es|fr)\//, '');
 const canonicalUrl = new URL(cleanSlug ? `/${cleanSlug}` : Astro.url.pathname, siteUrl).toString();
 
-// Absolute image URL
 const absoluteImage = (() => {
   if (!ogImage) return undefined;
   try {
@@ -73,7 +70,6 @@ const absoluteImage = (() => {
   }
 })();
 
-// Article / BlogPosting schema (typed via helper)
 const articleSchema = createBlogPostSchema({
   title,
   description,
@@ -87,10 +83,8 @@ const articleSchema = createBlogPostSchema({
   },
 });
 
-// FAQPage schema (only if faqs provided) — typed via helper
 const faqSchema = faqs && faqs.length > 0 ? createFAQSchema(faqs) : undefined;
 
-// Compose schemas — NOTE: BreadcrumbList is emitted by <Breadcrumbs /> below, do NOT duplicate
 const pageSchemas = [
   articleSchema,
   ...(faqSchema ? [faqSchema] : []),
@@ -138,15 +132,17 @@ const fullUrl = canonicalUrl;
       svgSlug={svgSlug}
     />
 
-    <article class="pt-8 pb-[var(--space-section-md)]">
+    <article class="pt-8">
       <div class="mx-auto max-w-4xl px-6">
         <Breadcrumbs items={breadcrumbs} class="mb-8" />
 
-        <div class="mv-content-body prose prose-lg max-w-none">
+        <div
+          class="mv-content-body prose prose-lg prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground max-w-none"
+        >
           <slot />
         </div>
 
-        <footer class="border-border mt-12 border-t pt-8" data-reveal>
+        <footer class="border-border mt-12 border-t pt-8">
           <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <a
               href="/blog"
@@ -171,27 +167,25 @@ const fullUrl = canonicalUrl;
       </div>
     </article>
 
+    <!-- Related Posts -->
     {
       tags.length > 0 && (
-        <div class="mx-auto max-w-screen-xl px-6" data-reveal>
+        <div class="mx-auto mt-16 max-w-4xl px-6">
           <RelatedPosts currentSlug={slug} tags={tags} locale="en" maxPosts={3} />
         </div>
       )
     }
 
-    <CTA
-      variant="default"
-      size="md"
-      maxWidth="lg"
-      glow={false}
-      data-reveal
-      class="bg-background-secondary"
-    >
-      <h2 slot="heading" class="!text-4xl">Get new outfit guides as they publish</h2>
-      <p slot="description" class="!text-lg text-balance">
+    <!-- Follow Along (Replaced Astro Rocket <CTA> component with raw HTML to prevent color conflicts) -->
+    <div class="border-border mx-auto mt-10 mb-16 max-w-4xl border-t px-6 pt-16 text-center">
+      <h2 class="text-foreground text-3xl font-bold md:text-4xl">
+        Get new outfit guides as they publish
+      </h2>
+      <p class="text-foreground-muted mx-auto mt-4 max-w-2xl text-lg">
         Concert outfit formulas, styling tips, and new guides — follow along however you prefer.
       </p>
-      <div class="flex flex-wrap items-center justify-center gap-3">
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
         <a
           href="/rss.xml"
           class="border-border bg-background text-foreground hover:border-brand-500 hover:text-brand-500 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
@@ -217,7 +211,7 @@ const fullUrl = canonicalUrl;
           <Icon name="mail" size="sm" /> Email
         </a>
       </div>
-    </CTA>
+    </div>
   </div>
 
   <Footer slot="footer" layout="simple" background="secondary" />

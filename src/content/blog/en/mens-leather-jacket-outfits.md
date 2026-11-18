@@ -25,7 +25,7 @@ faqs:
 
 This is the opposite of how most people style it. They add a graphic tee, a chain, ripped jeans, and a beanie, and end up looking like they're going to a costume party. The jacket doesn't need help. It needs space.
 
-And right now, leather is having a moment. Searches for **"men's leather jacket outfit" are up 200%**, and the rider jacket — the classic asymmetrical biker style — is up the same amount [reference:11]. The Fall/Winter 2026 runways leaned into it too: biker jackets with a polished attitude, matte and high-shine finishes side by side, paired with looser trousers that give the look room to breathe [reference:12].
+And right now, leather is having a moment. Searches for **"men's leather jacket outfit" are up 200%**, and the rider jacket — the classic asymmetrical biker style — is up the same amount. The Fall/Winter 2026 runways leaned into it too: biker jackets with a polished attitude, matte and high-shine finishes side by side, paired with looser trousers that give the look room to breathe.
 
 So if you're buying one this season, or you've had one in the closet for years and never quite figured out how to wear it, this is the guide.
 

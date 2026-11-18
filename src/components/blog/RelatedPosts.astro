@@ -17,52 +17,57 @@ const allPosts = await getCollection('blog', ({ data }) => {
   return data.locale === locale && (import.meta.env.PROD ? data.draft !== true : true);
 });
 
-// Filter to find posts with matching tags
-const relatedPosts = allPosts
-  .filter((post) => {
-    // Exclude current post
-    if (post.id === currentSlug || post.id.endsWith(`/${currentSlug}`)) return false;
+// 1. Filter out the current post
+const otherPosts = allPosts.filter((post) => {
+  return post.id !== currentSlug && !post.id.endsWith(`/${currentSlug}`);
+});
 
-    // Must have at least one matching tag
+// 2. Try to find posts with matching tags
+let relatedPosts = otherPosts
+  .filter((post) => {
     if (!tags.length) return false;
     return post.data.tags.some((tag) => tags.includes(tag));
   })
-  // Sort by number of matching tags, then by date
   .sort((a, b) => {
     const aMatches = a.data.tags.filter((tag) => tags.includes(tag)).length;
     const bMatches = b.data.tags.filter((tag) => tags.includes(tag)).length;
-
     if (bMatches !== aMatches) return bMatches - aMatches;
     return b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf();
   })
   .slice(0, maxPosts);
 
-// Generate URLs for each post (remove locale prefix from id)
+// 3. Fallback: If no tag matches, just show the most recent posts
+if (relatedPosts.length === 0) {
+  relatedPosts = otherPosts
+    .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+    .slice(0, maxPosts);
+}
+
 const getPostUrl = (postId: string) => {
   const slug = postId.replace(`${locale}/`, '');
   return `/${slug}`;
 };
 ---
 
-{relatedPosts.length > 0 && (
-  <section class="border-t border-border py-[var(--space-section-sm)]">
-    <h2 class="font-display text-2xl font-bold text-foreground mb-[var(--space-stack-lg)]">
-      Related Posts
-    </h2>
+{
+  relatedPosts.length > 0 && (
+    <section class="border-border mt-16 border-t py-[var(--space-section-sm)] pt-8">
+      <h2 class="font-display text-foreground mb-8 text-2xl font-bold">Keep Reading</h2>
 
-    <div class="grid gap-[var(--space-stack-lg)] md:grid-cols-2 lg:grid-cols-3">
-      {relatedPosts.map((post) => (
-        <BlogCard
-          title={post.data.title}
-          description={post.data.description}
-          href={getPostUrl(post.id)}
-          publishedAt={post.data.publishedAt}
-          tags={post.data.tags}
-          author={post.data.author}
-          image={post.data.image}
-          svgSlug={post.data.svgSlug}
-        />
-      ))}
-    </div>
-  </section>
-)}
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {relatedPosts.map((post) => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            href={getPostUrl(post.id)}
+            publishedAt={post.data.publishedAt}
+            tags={post.data.tags}
+            author={post.data.author}
+            image={post.data.image}
+            svgSlug={post.data.svgSlug}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}

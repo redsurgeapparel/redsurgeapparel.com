@@ -5,6 +5,7 @@
    ============================================================================= */
 
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 @import './tokens/colors.css';
 @import './tokens/typography.css';
 @import './tokens/spacing.css';
@@ -84,17 +85,17 @@
   --color-brand-900: var(--brand-900);
 
   /* Font Sizes - matches original design scale */
-  --font-size-xs: 0.75rem;     /* 12px */
-  --font-size-sm: 0.875rem;    /* 14px */
-  --font-size-base: 1rem;      /* 16px */
-  --font-size-lg: 1.125rem;    /* 18px */
-  --font-size-xl: 1.25rem;     /* 20px */
-  --font-size-2xl: 1.5rem;     /* 24px */
-  --font-size-3xl: 1.875rem;   /* 30px */
-  --font-size-4xl: 2.25rem;    /* 36px */
-  --font-size-5xl: 3rem;       /* 48px */
-  --font-size-6xl: 3.75rem;    /* 60px */
-  --font-size-7xl: 4.5rem;     /* 72px */
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+  --font-size-4xl: 2.25rem; /* 36px */
+  --font-size-5xl: 3rem; /* 48px */
+  --font-size-6xl: 3.75rem; /* 60px */
+  --font-size-7xl: 4.5rem; /* 72px */
 
   /* Border Radius - theme-controlled */
   --radius-sm: var(--theme-radius-sm);
@@ -146,9 +147,12 @@
     min-height: 100vh;
   }
 
-  /* Typography - headings use explicit foreground color to prevent any
-     gradient text effects from showing between heading characters */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
     line-height: 1.1;
     letter-spacing: var(--theme-heading-tracking);
@@ -156,18 +160,26 @@
     -webkit-text-fill-color: currentColor;
   }
 
-  h1, h2 { font-weight: 700; }
-  h3      { font-weight: 600; }
-  h4, h5, h6 { font-weight: 500; }
-
-  /* Paragraphs inherit color for flexibility in dark sections */
+  h1,
+  h2 {
+    font-weight: 700;
+  }
+  h3 {
+    font-weight: 600;
+  }
+  h4,
+  h5,
+  h6 {
+    font-weight: 500;
+  }
 
   a {
     color: inherit;
     text-decoration: none;
   }
 
-  code, pre {
+  code,
+  pre {
     font-family: var(--font-mono);
   }
 
@@ -181,21 +193,17 @@
     outline-offset: 2px;
   }
 
-  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-
   ::-webkit-scrollbar-thumb {
     background: var(--color-border-strong);
     border-radius: var(--radius-full);
   }
-
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-foreground-muted);
   }
@@ -205,18 +213,8 @@
    Utilities
    ------------------------------------------------------------------------- */
 @layer utilities {
-  /* Invert section - remaps Tailwind theme tokens for dark/contrast sections.
-
-     Architecture: All CSS property declarations in this file reference --color-*
-     tokens (the Tailwind namespace). @theme sets --color-* defaults on :root via
-     raw tokens; .invert-section overrides --color-* directly for section theming.
-
-     The `color` property is set explicitly so that unstyled child elements
-     (e.g. headings with no text-* class) inherit the correct inverted text color
-     rather than the body's root-level color. */
   .invert-section {
     color: var(--color-foreground);
-
     --color-background: var(--surface-invert);
     --color-foreground: var(--on-invert);
     --color-foreground-secondary: var(--on-invert-secondary);
@@ -238,7 +236,6 @@
 
   .dark .invert-section {
     color: var(--color-foreground);
-
     --color-background: var(--surface-invert);
     --color-foreground: var(--on-invert);
     --color-foreground-secondary: var(--on-invert-secondary);
@@ -258,7 +255,6 @@
     --color-primary-foreground: var(--surface-invert);
   }
 
-  /* Container */
   .container {
     width: 100%;
     max-width: var(--container-max);
@@ -272,7 +268,6 @@
     }
   }
 
-  /* Screen reader */
   .sr-only {
     position: absolute;
     width: 1px;
@@ -285,16 +280,10 @@
     border-width: 0;
   }
 
-  /* Subtle gradient background */
   .bg-gradient-subtle {
-    background: linear-gradient(
-      to bottom,
-      var(--gradient-start) 0%,
-      var(--gradient-end) 100%
-    );
+    background: linear-gradient(to bottom, var(--gradient-start) 0%, var(--gradient-end) 100%);
   }
 
-  /* Hero gradient — theme-aware */
   .hero-dark-gradient {
     background: var(--background);
   }
@@ -302,7 +291,6 @@
     background: linear-gradient(to bottom, var(--brand-600), black);
   }
 
-  /* Gradient border */
   .border-gradient {
     position: relative;
     background: var(--color-card);
@@ -321,36 +309,25 @@
       var(--color-border-strong) 100%
     );
     border-radius: inherit;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     mask-composite: exclude;
     pointer-events: none;
   }
 
-  /* Grid pattern */
   .bg-grid {
     background-size: 24px 24px;
-    background-image: linear-gradient(
-      to right,
-      var(--color-border) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      var(--color-border) 1px,
-      transparent 1px
-    );
+    background-image:
+      linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
   }
 
-  /* Dot pattern */
   .bg-dots {
-    background-image: radial-gradient(
-      var(--color-border-strong) 1px,
-      transparent 1px
-    );
+    background-image: radial-gradient(var(--color-border-strong) 1px, transparent 1px);
     background-size: 16px 16px;
   }
 
-  /* Grid pattern - for hero sections (matches the React design) */
   .bg-grid-pattern {
     background-image:
       linear-gradient(to right, var(--gray-200) 1px, transparent 1px),
@@ -364,24 +341,50 @@
       linear-gradient(to bottom, var(--gray-800) 1px, transparent 1px);
   }
 
-  /* Animations */
   .animate-fade-in {
     animation: fade-in 0.5s ease-out forwards;
   }
-
   .animate-slide-up {
     animation: slide-up 0.5s ease-out forwards;
   }
-
   .animate-slide-down {
     animation: slide-down 0.5s ease-out forwards;
   }
-
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  .animate-sheet-up {
+    animation: sheet-up 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+  .animate-backdrop {
+    animation: backdrop-fade 0.2s ease-out forwards;
+  }
+  .animate-dropdown-in {
+    animation: dropdown-in 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+  .animate-dropdown-out {
+    animation: dropdown-out 0.15s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+  .animate-menu-down {
+    transform-origin: top;
+    animation: menu-down 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+  .animate-menu-up {
+    transform-origin: top;
+    animation: menu-up 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+  .animate-sheet-down {
+    animation: sheet-down 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+  .animate-backdrop-out {
+    animation: backdrop-fade-out 0.2s ease-out forwards;
   }
 
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
   @keyframes slide-up {
     from {
       opacity: 0;
@@ -392,7 +395,6 @@
       transform: translateY(0);
     }
   }
-
   @keyframes slide-down {
     from {
       opacity: 0;
@@ -403,12 +405,6 @@
       transform: translateY(0);
     }
   }
-
-  /* Sheet slide up from bottom */
-  .animate-sheet-up {
-    animation: sheet-up 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
-  }
-
   @keyframes sheet-up {
     from {
       opacity: 0;
@@ -419,26 +415,14 @@
       transform: translateY(0);
     }
   }
-
-  /* Backdrop fade */
-  .animate-backdrop {
-    animation: backdrop-fade 0.2s ease-out forwards;
-  }
-
   @keyframes backdrop-fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
-
-  /* Dropdown animations */
-  .animate-dropdown-in {
-    animation: dropdown-in 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
-  }
-
-  .animate-dropdown-out {
-    animation: dropdown-out 0.15s cubic-bezier(0.32, 0.72, 0, 1) forwards;
-  }
-
   @keyframes dropdown-in {
     from {
       opacity: 0;
@@ -449,7 +433,6 @@
       transform: translateY(0) scale(1);
     }
   }
-
   @keyframes dropdown-out {
     from {
       opacity: 1;
@@ -460,18 +443,6 @@
       transform: translateY(-8px) scale(0.96);
     }
   }
-
-  /* Mobile menu slide down */
-  .animate-menu-down {
-    transform-origin: top;
-    animation: menu-down 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
-  }
-
-  .animate-menu-up {
-    transform-origin: top;
-    animation: menu-up 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
-  }
-
   @keyframes menu-down {
     from {
       opacity: 0;
@@ -482,7 +453,6 @@
       transform: scaleY(1);
     }
   }
-
   @keyframes menu-up {
     from {
       opacity: 1;
@@ -493,12 +463,6 @@
       transform: scaleY(0);
     }
   }
-
-  /* Sheet exit animation */
-  .animate-sheet-down {
-    animation: sheet-down 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
-  }
-
   @keyframes sheet-down {
     from {
       opacity: 1;
@@ -509,82 +473,98 @@
       transform: translateY(100%);
     }
   }
-
-  /* Backdrop fade out */
-  .animate-backdrop-out {
-    animation: backdrop-fade-out 0.2s ease-out forwards;
-  }
-
   @keyframes backdrop-fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
 
-  /* Stagger delays */
-  .delay-0 { animation-delay: 0ms; }
-  .delay-1 { animation-delay: 50ms; }
-  .delay-2 { animation-delay: 100ms; }
-  .delay-3 { animation-delay: 150ms; }
-  .delay-4 { animation-delay: 200ms; }
-  .delay-5 { animation-delay: 250ms; }
+  .delay-0 {
+    animation-delay: 0ms;
+  }
+  .delay-1 {
+    animation-delay: 50ms;
+  }
+  .delay-2 {
+    animation-delay: 100ms;
+  }
+  .delay-3 {
+    animation-delay: 150ms;
+  }
+  .delay-4 {
+    animation-delay: 200ms;
+  }
+  .delay-5 {
+    animation-delay: 250ms;
+  }
 
-  /* Hover transitions */
   .hover-lift {
-    transition: transform var(--transition-fast) var(--ease-out),
-                box-shadow var(--transition-fast) var(--ease-out);
+    transition:
+      transform var(--transition-fast) var(--ease-out),
+      box-shadow var(--transition-fast) var(--ease-out);
   }
-
   .hover-lift:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
   }
 
-  /* Link underline */
   .link-subtle {
     color: var(--color-foreground-secondary);
     transition: color var(--transition-fast);
   }
-
   .link-subtle:hover {
     color: var(--color-foreground);
   }
 
-  /* Spin animation */
   .animate-spin {
     animation: spin 1s linear infinite;
   }
-
   @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
-  /* Pulse */
   .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-
   @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 
-  /* Input error shake */
   .animate-shake {
     animation: shake 400ms var(--ease-default);
   }
-
   @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-4px); }
-    40%, 80% { transform: translateX(4px); }
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20%,
+    60% {
+      transform: translateX(-4px);
+    }
+    40%,
+    80% {
+      transform: translateX(4px);
+    }
   }
 
-  /* Tab content crossfade */
   .animate-tab-enter {
     animation: tab-enter var(--transition-normal) var(--ease-out);
   }
-
   @keyframes tab-enter {
     from {
       opacity: 0;
@@ -596,28 +576,26 @@
     }
   }
 
-  /* Toast slide-in */
   .animate-toast-in {
     animation: toast-in 350ms var(--ease-spring);
   }
-
   @keyframes toast-in {
     from {
       opacity: 0;
       transform: translateX(100%);
     }
-    60% { transform: translateX(-4px); }
+    60% {
+      transform: translateX(-4px);
+    }
     to {
       opacity: 1;
       transform: translateX(0);
     }
   }
 
-  /* Tooltip scale-in */
   .animate-tooltip-in {
     animation: tooltip-in var(--transition-fast) var(--ease-out);
   }
-
   @keyframes tooltip-in {
     from {
       opacity: 0;
@@ -629,7 +607,6 @@
     }
   }
 
-  /* Reduced motion: disable micro-animations */
   @media (prefers-reduced-motion: reduce) {
     .animate-shake,
     .animate-tab-enter,
@@ -644,26 +621,15 @@
    Components
    ------------------------------------------------------------------------- */
 @layer components {
-  /* -------------------------------------------------------------------------
-     Navigation Component Tokens
-     Customize header navigation via these CSS custom properties
-     ------------------------------------------------------------------------- */
   :root {
-    /* Nav link - inactive state */
     --nav-link-color: var(--color-foreground-muted);
     --nav-link-bg: transparent;
     --nav-link-font-weight: 500;
-
-    /* Nav link - hover state */
     --nav-link-hover-color: var(--color-foreground);
     --nav-link-hover-bg: var(--color-secondary);
-
-    /* Nav link - active state (current page) */
     --nav-link-active-color: var(--color-foreground);
     --nav-link-active-bg: var(--color-secondary);
     --nav-link-active-font-weight: 600;
-
-    /* Nav link - focus state */
     --nav-link-focus-ring: var(--color-ring);
   }
 
@@ -671,94 +637,126 @@
     color: var(--nav-link-color);
     background-color: var(--nav-link-bg);
   }
-
   .nav-link-inactive {
     font-weight: var(--nav-link-font-weight);
   }
-
   .nav-link-inactive:hover {
     color: var(--nav-link-hover-color);
     background-color: var(--nav-link-hover-bg);
   }
-
   .nav-link-active {
     color: var(--nav-link-active-color);
     background-color: var(--nav-link-active-bg);
     font-weight: var(--nav-link-active-font-weight);
   }
-
   .nav-link:focus-visible {
     outline: 2px solid var(--nav-link-focus-ring);
     outline-offset: 2px;
   }
-
-  /* Mobile nav links */
   .mobile-nav-link {
     color: var(--nav-link-color);
     background-color: var(--nav-link-bg);
   }
-
   .mobile-nav-link-inactive {
     font-weight: var(--nav-link-font-weight);
   }
-
   .mobile-nav-link-inactive:hover {
     color: var(--nav-link-hover-color);
     background-color: var(--nav-link-hover-bg);
   }
-
   .mobile-nav-link-active {
     color: var(--nav-link-active-color);
     background-color: var(--nav-link-active-bg);
     font-weight: var(--nav-link-active-font-weight);
   }
 
-  /* Prose */
+  /* 
+    PROSE THEMING:
+    Directly feeding our theme variables into the Tailwind Typography plugin.
+    This guarantees high contrast for ALL elements in both light and dark modes.
+  */
   .prose {
     max-width: 65ch;
-    color: var(--color-foreground-secondary);
     font-size: var(--font-size-base);
     line-height: 1.75;
+
+    /* Tailwind Typography variables override */
+    --tw-prose-body: var(--color-foreground);
+    --tw-prose-headings: var(--color-foreground);
+    --tw-prose-lead: var(--color-foreground);
+    --tw-prose-links: var(--color-brand-500);
+    --tw-prose-bold: var(--color-foreground);
+    --tw-prose-counters: var(--color-foreground);
+    --tw-prose-bullets: var(--color-foreground);
+    --tw-prose-hr: var(--color-border);
+    --tw-prose-quotes: var(--color-foreground);
+    --tw-prose-quote-borders: var(--color-border-strong);
+    --tw-prose-captions: var(--color-foreground-muted);
+    --tw-prose-code: var(--color-foreground);
+    --tw-prose-pre-code: var(--color-foreground);
+    --tw-prose-pre-bg: var(--color-background-secondary);
+    --tw-prose-th-borders: var(--color-border-strong);
+    --tw-prose-td-borders: var(--color-border);
   }
 
-  .prose h1, .prose h2, .prose h3, .prose h4 {
-    color: var(--color-foreground);
+  /* Force specific elements to use the theme foreground color with !important */
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    color: var(--color-foreground) !important;
     margin-top: 2em;
     margin-bottom: 0.75em;
   }
 
-  .prose h1 { font-size: 2.25em; line-height: 1.2; }
-  .prose h2 { font-size: 1.75em; line-height: 1.3; }
-  .prose h3 { font-size: 1.375em; line-height: 1.4; }
-  .prose h4 { font-size: 1.15em; line-height: 1.5; }
+  .prose p,
+  .prose li {
+    color: var(--color-foreground) !important;
+    opacity: 0.9; /* Slight softness for readability, still passes WCAG AAA */
+  }
+
+  .prose strong {
+    color: var(--color-foreground) !important;
+    font-weight: 700;
+  }
+
+  .prose a {
+    color: var(--color-brand-500) !important;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--transition-fast);
+  }
+  .prose a:hover {
+    color: var(--color-brand-600) !important;
+  }
+
+  .prose h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+  }
+  .prose h2 {
+    font-size: 1.75em;
+    line-height: 1.3;
+  }
+  .prose h3 {
+    font-size: 1.375em;
+    line-height: 1.4;
+  }
+  .prose h4 {
+    font-size: 1.15em;
+    line-height: 1.5;
+  }
 
   .prose h1:first-child,
   .prose h2:first-child,
   .prose h3:first-child {
     margin-top: 0;
   }
-
   .prose p {
     margin-bottom: 1.25em;
-    color: var(--color-foreground-secondary);
-  }
-
-  .prose a {
-    color: var(--color-foreground);
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: var(--color-brand-500);
-    transition: text-decoration-color var(--transition-fast);
-  }
-
-  .prose a:hover {
-    text-decoration-color: var(--color-foreground);
-  }
-
-  .prose strong {
-    color: var(--color-foreground);
-    font-weight: 600;
   }
 
   .prose code {
@@ -782,12 +780,11 @@
     padding: 0;
     font-size: 0.875rem;
   }
-
-  .prose ul, .prose ol {
+  .prose ul,
+  .prose ol {
     margin: 1.25em 0;
     padding-left: 1.5em;
   }
-
   .prose li {
     margin: 0.5em 0;
   }
@@ -804,7 +801,6 @@
     border-radius: var(--radius-lg);
     margin: 2em 0;
   }
-
   .prose hr {
     border: none;
     border-top: 1px solid var(--color-border);
@@ -819,11 +815,9 @@
     overflow-x: auto;
     display: block;
   }
-
   .prose thead {
     border-bottom: 2px solid var(--color-border-strong);
   }
-
   .prose th {
     color: var(--color-foreground);
     font-weight: 600;
@@ -831,32 +825,25 @@
     padding: 0.625em 0.875em;
     background: var(--color-background-secondary);
   }
-
   .prose td {
     padding: 0.625em 0.875em;
     border-bottom: 1px solid var(--color-border);
-    color: var(--color-foreground-secondary);
+    color: var(--color-foreground);
     vertical-align: top;
   }
-
   .prose tr:last-child td {
     border-bottom: none;
   }
-
   .prose tbody tr:hover td {
     background: var(--color-background-secondary);
   }
 
-  /* -------------------------------------------------------------------------
-     Tooltip Component
-     ------------------------------------------------------------------------- */
+  /* Tooltip */
   .tooltip-wrapper {
     position: relative;
     display: inline-flex;
   }
-
   .tooltip-bubble {
-    /* Base styles */
     position: absolute;
     z-index: 9999;
     padding: 0.375rem 0.75rem;
@@ -869,8 +856,6 @@
     box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
     white-space: nowrap;
     pointer-events: none;
-
-    /* Hidden by default */
     opacity: 0;
     visibility: hidden;
     transform: scale(0.96);
@@ -879,61 +864,50 @@
       transform var(--transition-fast) var(--ease-out),
       visibility var(--transition-fast) var(--ease-out);
   }
-
   .dark .tooltip-bubble {
     background-color: var(--gray-100);
     color: var(--gray-900);
   }
-
-  /* Position: Top (default) */
-  [data-tooltip-position="top"] .tooltip-bubble {
+  [data-tooltip-position='top'] .tooltip-bubble {
     bottom: calc(100% + 8px);
     top: auto;
     left: 50%;
     right: auto;
     transform: translateX(-50%) scale(0.96);
   }
-  [data-tooltip-position="top"] .tooltip-bubble.visible {
+  [data-tooltip-position='top'] .tooltip-bubble.visible {
     transform: translateX(-50%) scale(1);
   }
-
-  /* Position: Bottom */
-  [data-tooltip-position="bottom"] .tooltip-bubble {
+  [data-tooltip-position='bottom'] .tooltip-bubble {
     top: calc(100% + 8px);
     bottom: auto;
     left: 50%;
     right: auto;
     transform: translateX(-50%) scale(0.96);
   }
-  [data-tooltip-position="bottom"] .tooltip-bubble.visible {
+  [data-tooltip-position='bottom'] .tooltip-bubble.visible {
     transform: translateX(-50%) scale(1);
   }
-
-  /* Position: Left */
-  [data-tooltip-position="left"] .tooltip-bubble {
+  [data-tooltip-position='left'] .tooltip-bubble {
     right: calc(100% + 8px);
     left: auto;
     top: 50%;
     bottom: auto;
     transform: translateY(-50%) scale(0.96);
   }
-  [data-tooltip-position="left"] .tooltip-bubble.visible {
+  [data-tooltip-position='left'] .tooltip-bubble.visible {
     transform: translateY(-50%) scale(1);
   }
-
-  /* Position: Right */
-  [data-tooltip-position="right"] .tooltip-bubble {
+  [data-tooltip-position='right'] .tooltip-bubble {
     left: calc(100% + 8px);
     right: auto;
     top: 50%;
     bottom: auto;
     transform: translateY(-50%) scale(0.96);
   }
-  [data-tooltip-position="right"] .tooltip-bubble.visible {
+  [data-tooltip-position='right'] .tooltip-bubble.visible {
     transform: translateY(-50%) scale(1);
   }
-
-  /* Visible state */
   .tooltip-bubble.visible {
     opacity: 1;
     visibility: visible;
@@ -941,18 +915,17 @@
 }
 
 /* -------------------------------------------------------------------------
-   Hero entrance & scroll-reveal animations
-   Outside every @layer so these rules are unlayered CSS — highest cascade
-   precedence — and never overridden by Tailwind-generated utilities.
-   Explicit cubic-bezier values replace var() references to guarantee the
-   transition shorthand is always valid.
+   Animations & Utilities Outside Layers
    ------------------------------------------------------------------------- */
 
 @keyframes hero-slide-up {
-  from { transform: translateY(28px); }
-  to   { transform: translateY(0); }
+  from {
+    transform: translateY(28px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
-
 .animate-hero-slide-up {
   animation: hero-slide-up 0.7s cubic-bezier(0, 0, 0.2, 1) both;
 }
@@ -961,33 +934,33 @@
   opacity: 0;
   transform: translateY(20px);
   transition:
-    opacity  0.6s cubic-bezier(0, 0, 0.2, 1),
+    opacity 0.6s cubic-bezier(0, 0, 0.2, 1),
     transform 0.6s cubic-bezier(0, 0, 0.2, 1);
 }
-
 [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0);
 }
-
-[data-reveal][data-reveal-delay="1"] { transition-delay: 100ms; }
-[data-reveal][data-reveal-delay="2"] { transition-delay: 200ms; }
-[data-reveal][data-reveal-delay="3"] { transition-delay: 300ms; }
+[data-reveal][data-reveal-delay='1'] {
+  transition-delay: 100ms;
+}
+[data-reveal][data-reveal-delay='2'] {
+  transition-delay: 200ms;
+}
+[data-reveal][data-reveal-delay='3'] {
+  transition-delay: 300ms;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-hero-slide-up { animation: none; }
-
+  .animate-hero-slide-up {
+    animation: none;
+  }
   [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;
   }
 }
-
-/* ── Hero / CTA button styles ───────────────────────────────────────────────
-   Shared across all pages. Re-enable by applying these classes to buttons.
-   hero-btn-brand : brand-coloured primary action
-   hero-btn-learn : secondary action (outline in light, white pill in dark)   */
 
 .hero-btn-brand {
   background-color: var(--color-brand-700) !important;
@@ -1001,7 +974,6 @@
   opacity: 0.85;
 }
 
-/* Header CTA — brand colour in light mode */
 :root:not(.dark) .hdr-cta-brand {
   background-color: var(--color-brand-500) !important;
   background-image: none !important;
@@ -1032,4 +1004,30 @@
 }
 .dark .hero-btn-learn:hover {
   background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Fix Markdown formatting inside the article body */
+.mv-content-body ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+.mv-content-body ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+.mv-content-body li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+.mv-content-body li p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.mv-content-body strong {
+  font-weight: 700;
+  color: var(--color-foreground);
 }
