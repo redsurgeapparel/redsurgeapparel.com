@@ -5,6 +5,7 @@ import react from '@astrojs/react';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
+import inline from '@playform/inline';
 
 export default defineConfig({
   output: 'server',
@@ -63,7 +64,7 @@ export default defineConfig({
     layout: 'constrained',
   },
 
-  integrations: [react(), mdx(), sitemap(), icon()],
+  integrations: [react(), mdx(), sitemap(), icon(), inline()],
 
   vite: {
     plugins: [tailwindcss()],
