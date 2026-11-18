@@ -1,24 +1,29 @@
 ---
+// src/pages/projects/[slug].astro
 import ProjectLayout from '@/layouts/ProjectLayout.astro';
 import { getCollection, render } from 'astro:content';
 
-export async function getStaticPaths() {
-  const allProjects = await getCollection('projects', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
-  });
+const { slug } = Astro.params;
 
-  return allProjects.map((project) => ({
-    params: { slug: project.id.replace(/\.mdx?$/, '') },
-    props: {
-      project,
-      related: allProjects
-        .filter((p) => p.id !== project.id)
-        .slice(0, 3),
-    },
-  }));
+if (!slug) {
+  return Astro.redirect('/404');
 }
 
-const { project, related } = Astro.props;
+// Fetch all published projects on this request
+const allProjects = await getCollection('projects', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+// Match by stripped id (original code stripped ".mdx"/".md" from the id)
+const project = allProjects.find((p) => p.id.replace(/\.mdx?$/, '') === slug);
+
+if (!project) {
+  return Astro.redirect('/404');
+}
+
+// Pick up to 3 related projects
+const related = allProjects.filter((p) => p.id !== project.id).slice(0, 3);
+
 const { Content } = await render(project);
 ---
 

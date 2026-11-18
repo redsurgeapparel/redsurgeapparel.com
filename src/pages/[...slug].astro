@@ -1,19 +1,26 @@
 ---
+// src/pages/[...slug].astro
 import BlogLayout from '@/layouts/BlogLayout.astro';
 import { getCollection, render } from 'astro:content';
 
-export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => {
-    return data.locale === 'en' && (import.meta.env.PROD ? data.draft !== true : true);
-  });
+const { slug } = Astro.params;
 
-  return posts.map((post) => ({
-    params: { slug: post.id.replace('en/', '') },
-    props: { post },
-  }));
+if (!slug) {
+  return Astro.redirect('/404');
 }
 
-const { post } = Astro.props;
+// Fetch every published English post on this request
+const posts = await getCollection('blog', ({ data }) => {
+  return data.locale === 'en' && (import.meta.env.PROD ? data.draft !== true : true);
+});
+
+// Match the requested slug against the post id (id looks like "en/my-post")
+const post = posts.find((p) => p.id.replace('en/', '') === slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
 const { Content } = await render(post);
 ---
 

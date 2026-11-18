@@ -1,4 +1,5 @@
 ---
+// src/pages/blog/[page].astro
 import PageLayout from '@/layouts/PageLayout.astro';
 import BlogCard from '@/components/blog/BlogCard.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
@@ -8,49 +9,52 @@ import { Hero } from '@/components/hero';
 import { getCollection } from 'astro:content';
 import siteConfig from '@/config/site.config';
 import { resolveSocialLinks } from '@/lib/utils';
-import type { GetStaticPaths } from 'astro';
-import type { CollectionEntry } from 'astro:content';
 
-export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
-  const allPosts = await getCollection('blog', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
+const pageSize = 12;
+
+// 1. Read page number from the URL
+const rawPage = Astro.params.page;
+const currentPage = Number(rawPage) || 1;
+
+// 2. Fetch and sort all published posts on every request
+const allPosts = await getCollection('blog', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+const posts = allPosts
+  .filter((post) => post.data.locale === 'en')
+  .sort((a, b) => {
+    const dateA = new Date(a.data.publishedAt).getTime();
+    const dateB = new Date(b.data.publishedAt).getTime();
+    return dateB - dateA;
   });
 
-  const posts = allPosts
-    .filter((post) => post.data.locale === 'en')
-    .sort((a, b) => {
-      const dateA = new Date(a.data.publishedAt).getTime();
-      const dateB = new Date(b.data.publishedAt).getTime();
-      return dateB - dateA;
-    });
+// 3. Manual pagination
+const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
+const start = (currentPage - 1) * pageSize;
+const end = start + pageSize;
+const paginatedPosts = posts.slice(start, end);
 
-  return paginate(posts, { pageSize: 12 });
-};
+// 4. Guard against out-of-range page numbers
+if (currentPage < 1 || currentPage > totalPages) {
+  return Astro.redirect('/404');
+}
 
-const { page } = Astro.props as {
-  page: {
-    data: CollectionEntry<'blog'>[];
-    currentPage: number;
-    lastPage: number;
-    url: {
-      prev?: string;
-      next?: string;
-    };
-  };
-};
-const posts = page.data;
+// 5. Prev / next URLs
+const prevUrl = currentPage > 1 ? `/blog/${currentPage - 1}` : undefined;
+const nextUrl = currentPage < totalPages ? `/blog/${currentPage + 1}` : undefined;
 
 const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
 
-// Featured only on page 1
-const featuredPosts = page.currentPage === 1 ? posts.filter((post) => post.data.featured) : [];
+// Featured posts only appear on page 1
+const featuredPosts = currentPage === 1 ? paginatedPosts.filter((post) => post.data.featured) : [];
 
-// Regular posts
-const nonFeaturedPosts = posts.filter((post) => !post.data.featured);
-const regularPosts = nonFeaturedPosts.length > 0 ? nonFeaturedPosts : posts;
+// Regular posts for the current page
+const nonFeaturedPosts = paginatedPosts.filter((post) => !post.data.featured);
+const regularPosts = nonFeaturedPosts.length > 0 ? nonFeaturedPosts : paginatedPosts;
 
-// Tags (per page)
-const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
+// Tags for the current page
+const allTags = [...new Set(paginatedPosts.flatMap((post) => post.data.tags))].sort();
 
 const getPostUrl = (postId: string) => {
   const slug = postId.replace('en/', '');
@@ -59,7 +63,7 @@ const getPostUrl = (postId: string) => {
 ---
 
 <PageLayout
-  title={`Blog — Page ${page.currentPage}`}
+  title={`Blog — Page ${currentPage}`}
   description="Articles on web design, development, and the web by Astro Rocket."
   showScrollProgress
   eagerReveal
@@ -70,8 +74,7 @@ const getPostUrl = (postId: string) => {
       All posts
     </Badge>
 
-    <h1 slot="title">{`Blog — Page ${page.currentPage}`}</h1>
-
+    <h1 slot="title">{`Blog — Page ${currentPage}`}</h1>
   </Hero>
 
   <!-- Featured Posts -->
@@ -170,20 +173,20 @@ const getPostUrl = (postId: string) => {
       <!-- Pagination -->
       <div class="mt-12 flex items-center justify-center gap-4">
         {
-          page.url.prev && (
-            <a href={page.url.prev} class="rounded border px-4 py-2">
+          prevUrl && (
+            <a href={prevUrl} class="rounded border px-4 py-2">
               ← Previous
             </a>
           )
         }
 
         <span class="text-sm">
-          Page {page.currentPage} of {page.lastPage}
+          Page {currentPage} of {totalPages}
         </span>
 
         {
-          page.url.next && (
-            <a href={page.url.next} class="rounded border px-4 py-2">
+          nextUrl && (
+            <a href={nextUrl} class="rounded border px-4 py-2">
               Next →
             </a>
           )

@@ -6,16 +6,14 @@ import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
 
-// const isNetlify = process.env.DEPLOY_TARGET === 'netlify'; // No longer needed
-
 export default defineConfig({
-  // --- ADD THIS LINE ---
   output: 'server',
-  // ---------------------
+
   adapter: cloudflare({
-    imageService: 'cloudflare',
+    imageService: 'cloudflare-binding',
     platformProxy: { enabled: true },
   }),
+
   site: process.env.SITE_URL || 'https://redsurgeapparel.com/',
 
   env: {
