@@ -6,28 +6,58 @@ import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
 
-const isNetlify = process.env.DEPLOY_TARGET === 'netlify';
+// const isNetlify = process.env.DEPLOY_TARGET === 'netlify'; // No longer needed
 
 export default defineConfig({
+  // --- ADD THIS LINE ---
+  output: 'server',
+  // ---------------------
   adapter: cloudflare({
-    imageService: 'cloudflare', // recommended for Workers
-    platformProxy: { enabled: true }, // lets you access bindings in dev
+    imageService: 'cloudflare',
+    platformProxy: { enabled: true },
   }),
   site: process.env.SITE_URL || 'https://redsurgeapparel.com/',
 
   env: {
     schema: {
       SITE_URL: envField.string({ context: 'server', access: 'public', optional: true }),
-      PUBLIC_GA_MEASUREMENT_ID: envField.string({ context: 'client', access: 'public', optional: true }),
+      PUBLIC_GA_MEASUREMENT_ID: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+      }),
       PUBLIC_GTM_ID: envField.string({ context: 'client', access: 'public', optional: true }),
       RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       RESEND_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
       NEWSLETTER_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
-      GOOGLE_SITE_VERIFICATION: envField.string({ context: 'server', access: 'public', optional: true }),
-      BING_SITE_VERIFICATION: envField.string({ context: 'server', access: 'public', optional: true }),
-      PUBLIC_GOOGLE_MAPS_API_KEY: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
-      PUBLIC_CONSENT_ENABLED: envField.boolean({ context: 'client', access: 'public', optional: true, default: false }),
-      PUBLIC_PRIVACY_POLICY_URL: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
+      GOOGLE_SITE_VERIFICATION: envField.string({
+        context: 'server',
+        access: 'public',
+        optional: true,
+      }),
+      BING_SITE_VERIFICATION: envField.string({
+        context: 'server',
+        access: 'public',
+        optional: true,
+      }),
+      PUBLIC_GOOGLE_MAPS_API_KEY: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+        default: '',
+      }),
+      PUBLIC_CONSENT_ENABLED: envField.boolean({
+        context: 'client',
+        access: 'public',
+        optional: true,
+        default: false,
+      }),
+      PUBLIC_PRIVACY_POLICY_URL: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+        default: '',
+      }),
     },
   },
 
@@ -35,12 +65,7 @@ export default defineConfig({
     layout: 'constrained',
   },
 
-  integrations: [
-    react(),
-    mdx(),
-    sitemap(),
-    icon(),
-  ],
+  integrations: [react(), mdx(), sitemap(), icon()],
 
   vite: {
     plugins: [tailwindcss()],
@@ -56,5 +81,4 @@ export default defineConfig({
       wrap: true,
     },
   },
-
 });

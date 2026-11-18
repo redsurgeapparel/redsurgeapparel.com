@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - '@astrojs/cloudflare@14.4.9'
