@@ -1,6 +1,5 @@
 import { defineConfig, envField } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
@@ -64,7 +63,7 @@ export default defineConfig({
     layout: 'constrained',
   },
 
-  integrations: [react(), mdx(), sitemap(), icon(), inline()],
+  integrations: [react(), mdx(), icon(), inline()],
 
   vite: {
     plugins: [tailwindcss()],
